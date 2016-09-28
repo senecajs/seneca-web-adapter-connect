@@ -1,6 +1,6 @@
 {
   "name": "seneca-web-adapter-connect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "seneca-web adapter for connect",
   "keywords": [
     "seneca",
@@ -39,8 +39,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "web.js",
-    "lib"
+    "seneca-web-adapter-connect.js",
+    "read-body.js"
   ],
   "dependencies": {
     "eraro": "^0.4.1",
