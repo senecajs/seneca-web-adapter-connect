@@ -29,7 +29,7 @@ const Connect = require('connect')
 const seneca = Seneca()
 seneca.use(SenecaWeb, {
   context: Connect(),
-  adapter: require('seneca-web-adapter-express')
+  adapter: require('seneca-web-adapter-connect')
 })
 seneca.ready(() => {
   const app = seneca.export('web/context')()
