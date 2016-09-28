@@ -7,8 +7,8 @@ This is an adapter for [seneca-web](https://github.com/senecajs/seneca-web/) usi
 
 ## Installation
 
-Peer dependencies have been specified for `connect`, and `seneca-web`
-They need to be present for this to work at all.
+A peer dependencies has been specified for `seneca-web`
+And of course `connect` needs to be present for this to work at all.
 
 ```
 npm install --save connect

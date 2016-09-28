@@ -1,6 +1,6 @@
 {
   "name": "seneca-web-adapter-connect",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "seneca-web adapter for connect",
   "keywords": [
     "seneca",
@@ -47,8 +47,7 @@
     "lodash": "^4.15.0"
   },
   "peerDependencies": {
-    "seneca-web": "^1.0.0",
-    "connect": "^3.5.0"
+    "seneca-web": "^1.0.0"
   },
   "devDependencies": {
     "body-parser": "^1.15.2",
