@@ -23,8 +23,7 @@ module.exports = function connect (options, context, auth, routes, done) {
 
       function finish (err, body) {
         if (err) {
-          reply.writeHead(500, {'Content-Type': 'application/json'})
-          return reply.end(JSON.stringify(err))
+          return next(err)
         }
 
         var payload = {
@@ -38,8 +37,7 @@ module.exports = function connect (options, context, auth, routes, done) {
         }
         seneca.act(route.pattern, payload, (err, response) => {
           if (err) {
-            reply.writeHead(500, {'Content-Type': 'application/json'})
-            return reply.end(JSON.stringify(err))
+            return next(err)
           }
           if (route.autoreply) {
             reply.writeHead(200, {'Content-Type': 'application/json'})

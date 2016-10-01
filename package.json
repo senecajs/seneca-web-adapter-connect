@@ -1,6 +1,6 @@
 {
   "name": "seneca-web-adapter-connect",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "seneca-web adapter for connect",
   "keywords": [
     "seneca",
