@@ -214,7 +214,7 @@ describe('connect', () => {
         }
       }
       si.act('role:web', config, (err, reply) => {
-        expect(err.details.message).to.equal('expected function for middleware, got total not valid')
+        expect(err.details.message).to.equal('expected valid middleware, got total not valid')
         done()
       })
     })
