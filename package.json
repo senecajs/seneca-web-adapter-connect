@@ -59,7 +59,7 @@
     "eslint-config-seneca": "^3.0.0",
     "eslint-plugin-hapi": "^4.0.0",
     "eslint-plugin-standard": "^2.0.0",
-    "lab": "^11.0.1",
+    "lab": "^13.1.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pre-commit": "^1.1.3",
