@@ -1,3 +1,7 @@
+## 1.1.0 2017-12-03
+
+* Adds support for middleware (#9)
+
 ## 1.0.3 2016-10-02
 
 * Allow host application to handle errors (#2)
