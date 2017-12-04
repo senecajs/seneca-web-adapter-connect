@@ -25,7 +25,7 @@ module.exports = function connect (options, context, auth, routes, done) {
       return ret
     })
 
-    context.use(route.path, composeMiddleware([...routeMiddleware, (request, reply, next) => {
+    context.use(route.path, composeMiddleware(routeMiddleware.concat([(request, reply, next) => {
       // Connect does not work with http verbs
       if (route.methods.indexOf(request.method) !== -1) {
         // if parsing body, call into ReadBody otherwise just finish.
@@ -57,7 +57,7 @@ module.exports = function connect (options, context, auth, routes, done) {
           }
         })
       }
-    }]))
+    }])))
   })
   return done(null, {routes: routes})
 }
