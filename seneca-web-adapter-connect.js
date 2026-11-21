@@ -2,7 +2,6 @@
 
 const _ = require('lodash')
 const QueryString = require('querystring')
-const URL = require('url')
 const ReadBody = require('./read-body')
 
 module.exports = function connect(options, context, auth, routes, done) {
@@ -46,13 +45,18 @@ module.exports = function connect(options, context, auth, routes, done) {
                 return next(err)
               }
 
+              // The WHATWG URL parser replaces url.parse, which is
+              // deprecated (DEP0169) and warns on Node.js 24 and later.
+              // Only the query string is read, so the base is arbitrary.
+              const search = new URL(request.originalUrl, 'http://localhost')
+                .search
               var payload = {
                 request$: request,
                 response$: reply,
                 args: {
                   body: body,
                   route: route,
-                  query: QueryString.parse(URL.parse(request.originalUrl).query)
+                  query: QueryString.parse(search.slice(1))
                 }
               }
               seneca.act(route.pattern, payload, (err, response) => {
