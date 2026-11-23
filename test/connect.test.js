@@ -2,6 +2,7 @@
 
 const { describe, it, beforeEach, afterEach } = require('node:test')
 const assert = require('node:assert')
+const Http = require('node:http')
 const Seneca = require('seneca')
 const Web = require('@seneca/web')
 const Connect = require('connect')
@@ -130,6 +131,40 @@ describe('connect', () => {
 
     res = await fetch(base + '/echo')
     assert.deepEqual(await res.json(), { query: {} })
+  })
+
+  it('reads the query of a target that is not a valid URL path', async () => {
+    si.add('role:test,cmd:echo', (msg, reply) => {
+      reply(null, { query: msg.args.query })
+    })
+
+    // A route at the root matches '//?foo=bar', which new URL() rejects as
+    // a URL without a host. With parseBody the adapter reads the query in
+    // the request's 'end' listener, where a throw would stop the server.
+    const route = {
+      path: '/',
+      methods: ['GET'],
+      pattern: 'role:test,cmd:echo',
+      autoreply: true
+    }
+    await new Promise((resolve, reject) =>
+      require('..').call(si, { parseBody: true }, app, null, [route], err =>
+        err ? reject(err) : resolve()
+      )
+    )
+
+    const res = await new Promise((resolve, reject) => {
+      const req = Http.get(
+        { host: '127.0.0.1', port: server.address().port, path: '//?foo=bar' },
+        resolve
+      )
+      req.on('error', reject)
+      req.setTimeout(5000, () => req.destroy(new Error('no response')))
+    })
+    let text = ''
+    for await (const chunk of res) text += chunk
+    assert.equal(res.statusCode, 200)
+    assert.deepEqual(JSON.parse(text), { query: { foo: 'bar' } })
   })
 
   it('post without body parser defined', async () => {

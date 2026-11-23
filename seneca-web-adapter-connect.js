@@ -45,18 +45,13 @@ module.exports = function connect(options, context, auth, routes, done) {
                 return next(err)
               }
 
-              // The WHATWG URL parser replaces url.parse, which is
-              // deprecated (DEP0169) and warns on Node.js 24 and later.
-              // Only the query string is read, so the base is arbitrary.
-              const search = new URL(request.originalUrl, 'http://localhost')
-                .search
               var payload = {
                 request$: request,
                 response$: reply,
                 args: {
                   body: body,
                   route: route,
-                  query: QueryString.parse(search.slice(1))
+                  query: QueryString.parse(queryOf(request.originalUrl))
                 }
               }
               seneca.act(route.pattern, payload, (err, response) => {
@@ -75,6 +70,20 @@ module.exports = function connect(options, context, auth, routes, done) {
     )
   })
   return done(null, { routes: routes })
+}
+
+/**
+ * The query string of a request target, as url.parse gave it: the text
+ * after the first '?' and before any '#'. url.parse is deprecated
+ * (DEP0169) and warns on Node.js 24 and later, and new URL() throws on
+ * targets such as '//?a=1', which url.parse accepted.
+ * @param {string} target the request target (request.originalUrl)
+ */
+const queryOf = target => {
+  const hash = target.indexOf('#')
+  const path = hash < 0 ? target : target.slice(0, hash)
+  const start = path.indexOf('?')
+  return start < 0 ? '' : path.slice(start + 1)
 }
 
 /**
