@@ -2,7 +2,6 @@
 
 const _ = require('lodash')
 const QueryString = require('querystring')
-const URL = require('url')
 const ReadBody = require('./read-body')
 
 module.exports = function connect(options, context, auth, routes, done) {
@@ -52,7 +51,7 @@ module.exports = function connect(options, context, auth, routes, done) {
                 args: {
                   body: body,
                   route: route,
-                  query: QueryString.parse(URL.parse(request.originalUrl).query)
+                  query: QueryString.parse(queryOf(request.originalUrl))
                 }
               }
               seneca.act(route.pattern, payload, (err, response) => {
@@ -71,6 +70,20 @@ module.exports = function connect(options, context, auth, routes, done) {
     )
   })
   return done(null, { routes: routes })
+}
+
+/**
+ * The query string of a request target, as url.parse gave it: the text
+ * after the first '?' and before any '#'. url.parse is deprecated
+ * (DEP0169) and warns on Node.js 24 and later, and new URL() throws on
+ * targets such as '//?a=1', which url.parse accepted.
+ * @param {string} target the request target (request.originalUrl)
+ */
+const queryOf = target => {
+  const hash = target.indexOf('#')
+  const path = hash < 0 ? target : target.slice(0, hash)
+  const start = path.indexOf('?')
+  return start < 0 ? '' : path.slice(start + 1)
 }
 
 /**

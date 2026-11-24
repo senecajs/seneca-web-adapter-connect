@@ -1,6 +1,6 @@
 {
   "name": "@seneca/web-adapter-connect",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "seneca-web adapter for connect",
   "keywords": [
     "seneca",
@@ -30,46 +30,44 @@
   "license": "MIT",
   "main": "seneca-web-adapter-connect.js",
   "scripts": {
-    "test": "lab -v -L -t 80 -m 5000",
-    "test-debug": "node --debug-brk=5858 node_modules/lab/bin/lab -v -m 5000000",
-    "coveralls": "lab -s -r lcov | coveralls",
-    "coverage": "lab -v -L -r html > docs/coverage.html",
-    "annotate": "docco web.js -o docs/annotated",
-    "prettier": "prettier --write --no-semi --single-quote seneca-web-adapter-connect.js ready-body.js test/*.js"
+    "pretest": "eslint .",
+    "test": "node --test --experimental-test-coverage --test-coverage-include=seneca-web-adapter-connect.js --test-coverage-include=read-body.js --test-coverage-exclude=\"test/**\" --test-coverage-lines=80 test/*.test.js",
+    "test-debug": "node --inspect-brk --test test/*.test.js",
+    "coverage": "node --test --experimental-test-coverage --test-coverage-include=seneca-web-adapter-connect.js --test-coverage-include=read-body.js --test-coverage-exclude=\"test/**\" test/*.test.js",
+    "prettier": "prettier --write --no-semi --single-quote seneca-web-adapter-connect.js read-body.js test/*.js"
   },
   "files": [
     "LICENSE",
     "README.md",
+    "CHANGES.md",
     "seneca-web-adapter-connect.js",
     "read-body.js"
   ],
   "dependencies": {
-    "eraro": "^0.4.1",
-    "lodash": "^4.15.0"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
-    "seneca-web": "^1.0.0 || ^2.0.0"
+    "@seneca/web": "^3.0.0",
+    "seneca": "^4.0.0"
   },
   "devDependencies": {
-    "body-parser": "^1.15.2",
-    "code": "^3.0.2",
-    "connect": "^3.5.0",
-    "cookie-parser": "^1.4.3",
-    "coveralls": "^2.11.12",
-    "docco": "^0.7.0",
-    "eslint-config-seneca": "^3.0.0",
-    "eslint-plugin-hapi": "^4.0.0",
-    "eslint-plugin-standard": "^2.0.0",
-    "lab": "^13.1.0",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
+    "@eslint/js": "^10.0.1",
+    "@seneca/web": "^3.0.0",
+    "body-parser": "^2.2.0",
+    "connect": "^3.7.0",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
     "prettier": "^1.9.2",
-    "request": "^2.74.0",
-    "seneca": "plugin",
-    "seneca-web": "^2.2.0"
+    "seneca": "^4.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/senecajs/seneca-web-adapter-connect.git"
+    "url": "git+https://github.com/senecajs/seneca-web-adapter-connect.git"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
